@@ -1,12 +1,11 @@
 #include "http_fsm.h"
 #include "sensor_fsm.h"
 #include "ota_fsm.h"
+#include "wifi_fsm.h"
 
 #include "system_event.h"
 
 #include <zephyr/kernel.h>
-
-K_MSGQ_DEFINE(system_msgq, sizeof(system_event), 10, 1);
 
 int main(void) {
 
@@ -16,6 +15,7 @@ int main(void) {
 	http_fsm_init();
 	sensor_fsm_init();
 	ota_fsm_init();
+	wifi_fsm_init();
 
 	//This is a mock event;
 	evt->name = HTTP_REQUEST;
@@ -33,6 +33,9 @@ int main(void) {
 				break;
 			case OTA_FSM:
 				ota_fsm_handle(evt);
+				break;
+			case WIFI_FSM:
+				wifi_fsm_handle(evt);
 				break;
 			default:
 				break;
